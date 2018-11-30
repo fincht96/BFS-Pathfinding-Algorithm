@@ -5,8 +5,8 @@
 
 const int grid_width = 5;
 const int grid_height = 5;
-const uint8_t start_pos = 20;
-const uint8_t goal_pos = 1;
+const uint8_t start_pos = 1;
+const uint8_t goal_pos = 15;
 
 
 
@@ -127,7 +127,6 @@ auto findShortestPath(G& grid, unsigned start, unsigned goal)
 
 	std::cout << "No suitable path found.\n";
 	std::cin.get();
-	//return;
 }
 
 // args: grid, start position, goal position
@@ -139,13 +138,13 @@ bool plotShortestPath(G& grid, unsigned start, unsigned goal)
 	// a node with 'trail' value of 8 has been searched by node 8
 	std::vector<int> trail(grid.size(), -1);		 // (one element for each node in grid)
 
-													 // used to hold a queue of nodes to be searched next
-	std::queue<int> search_queue;
 
-	search_queue.push(0);	// pushes the start node into queue
-	trail[0] = 0;			// records starting point in trail
+	std::queue<int> search_queue;					// used to hold a queue of nodes to be searched next
 
-							// if queue is empty then a path was not found
+	search_queue.push(start);		// pushes the start node into queue
+	trail[start] = start;			// records starting point in trail
+
+									// if queue is empty then a path was not found
 	while (!search_queue.empty())
 	{
 		int current_node = search_queue.front();		// fetch first element from queue
@@ -170,11 +169,15 @@ bool plotShortestPath(G& grid, unsigned start, unsigned goal)
 			}
 
 
+			// draws the shortest path on the maze
 			for (unsigned i = 0; i < path.size(); i++)
 			{
+
+
 				if ((grid[path[i]] != 'A') && (grid[path[i]] != 'B'))
 					grid[path[i]] = '-';
 			}
+
 
 			return true;
 		}
@@ -186,23 +189,23 @@ bool plotShortestPath(G& grid, unsigned start, unsigned goal)
 		search_queue.pop();										// remove first element from queue
 	}
 
+	std::cout << "No suitable path found.\n";
 	return false;
 }
 
 int main()
 {
-
-
-
 	/*
-	*	4*4 grid, where each element is labelled as follows:
+	*	5*5 grid, where each element is labelled as follows:
 	*
-	*		0,  1,  2,  3
-	*		4,  5,  6,  7
-	*		8,  9,  10, 11
-	*		12, 13, 14, 15
+	*		0,  1,  2,  3,  4
+	*		5,  6,  7,  8,  9
+	*		10, 11, 12, 13, 14 
+	*		15, 16, 17, 18, 19
+	*		20, 21, 22, 23, 24
 	*
 	*/
+
 	std::array<char, grid_width*grid_height> grid;
 
 
@@ -210,15 +213,14 @@ int main()
 
 	grid[start_pos] = 'A';
 	grid[goal_pos] = 'B';
-
-	grid[0] = '@';
-	grid[6] = '@';
+	grid[5] = '@';
 	grid[7] = '@';
-	grid[8] = '@';
-	grid[13] = '@';
-	grid[16] = '@';
-	grid[18] = '@';
-	grid[21] = '@';
+	grid[11] = '@';
+	grid[17] = '@';
+
+
+
+	std::cout << "\nThe maze is as follows, where A and B are the start and goal position respectfully:";
 
 	// prints the starting grid
 	print(grid, grid_width, grid_height);
@@ -232,15 +234,11 @@ int main()
 	for (const auto element : path)
 		std::cout << element << std::endl;
 
-	// draws the shortest path on the maze
-	for (unsigned i = 0; i < path.size(); i++)
-	{
+
+	plotShortestPath(grid, start_pos, goal_pos);
 
 
-		if ((grid[path[i]] != 'A') && (grid[path[i]] != 'B'))
-			grid[path[i]] = '*';
-	}
-
+	std::cout << "\nThe maze with the shortest path between A and B is shown below, where '-' represents the path taken:";
 
 	// prints the grid with path drawn
 	print(grid, grid_width, grid_height);
