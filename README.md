@@ -6,3 +6,5 @@ A simple "Breadth First Search" path finding algorithm written in C++. The code 
 		10, 11, 12, 13, 14 
 		15, 16, 17, 18, 19
 		20, 21, 22, 23, 24
+
+<a href="https://ibb.co/t8p4Wnf"><img src="https://i.ibb.co/5Bh6fCD/BFS-Example.png" alt="BFS-Example" border="0"></a>
